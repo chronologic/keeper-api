@@ -1,5 +1,5 @@
 export default class ApplicationError extends Error {
-  public message: string = 'ApplicationError';
+  public message: string = "ApplicationError";
 
   public status: number = 500;
 
