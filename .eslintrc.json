@@ -55,7 +55,17 @@
     "class-methods-use-this": "off",
     "comma-dangle": ["error", "always-multiline"],
     "handle-callback-err": "error",
-    "quotes": ["error", "double"]
+    "quotes": ["error", "double"],
+    "object-curly-newline": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true,
+        "ignoreComments": true
+      }
+    ]
   },
   "overrides": [
     {
