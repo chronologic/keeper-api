@@ -42,6 +42,7 @@
     "arrow-parens": ["error", "always"],
     "semi": "error",
     "no-extra-semi": 0,
+    "no-use-before-define": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": 0,
     "import/no-extraneous-dependencies": [
@@ -50,13 +51,18 @@
         "devDependencies": ["**/*.test.ts", "**/*.spec.ts"]
       }
     ],
+    "import/order": "off",
     "no-unused-vars": "off",
     "dot-notation": "off",
     "class-methods-use-this": "off",
     "comma-dangle": ["error", "always-multiline"],
     "handle-callback-err": "error",
-    "quotes": ["error", "double"],
+    "quotes": ["error", "single"],
     "object-curly-newline": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-restricted-syntax": "off",
+    "no-await-in-loop": "off",
+    "operator-linebreak": "off",
     "max-len": [
       "error",
       {
@@ -65,7 +71,8 @@
         "ignoreRegExpLiterals": true,
         "ignoreComments": true
       }
-    ]
+    ],
+    "no-shadow": "off"
   },
   "overrides": [
     {

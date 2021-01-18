@@ -24,7 +24,7 @@ app.use((err: ApplicationError, req: Request, res: Response, next: NextFunction)
 
   return res.status(err.status || 500).json({
     error: process.env.NODE_ENV === 'development' ? err : undefined,
-    message: err.message
+    message: err.message,
   });
 });
 

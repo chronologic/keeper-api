@@ -1,7 +1,7 @@
-import { RequestHandler, Request, Response, NextFunction } from "express";
-import Joi from "@hapi/joi";
-import BadRequest from "../errors/bad-request";
-import logger from "../logger";
+import { RequestHandler, Request, Response, NextFunction } from 'express';
+import Joi from '@hapi/joi';
+import BadRequest from '../errors/bad-request';
+import logger from '../logger';
 
 const getMessageFromJoiError = (error: Joi.ValidationError): string | undefined => {
   if (!error.details && error.message) {
@@ -38,10 +38,10 @@ export const requestMiddleware = (handler: RequestHandler, options?: HandlerOpti
   try {
     return handler(req, res, next);
   } catch (err) {
-    if (process.env.NODE_ENV === "development") {
+    if (process.env.NODE_ENV === 'development') {
       logger.log({
-        level: "error",
-        message: "Error in request handler",
+        level: 'error',
+        message: 'Error in request handler',
         error: err,
       });
     }
