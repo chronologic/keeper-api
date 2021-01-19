@@ -21,16 +21,15 @@ const getOrCreate: RequestHandler = async (req, res) => {
       .createEntityManager()
       .save(User, {
         address,
+        operators: [],
       } as User);
   }
-
-  console.log(user, JSON.stringify(user));
 
   res.send({
     address: user.address,
     email: user.email,
     balanceEth: BigNumber.from(user.balanceEth || 0).toString(),
-    operatorAddress: user.operators[0]?.address,
+    operatorAddress: user.operators[0]?.address || null,
   });
 };
 

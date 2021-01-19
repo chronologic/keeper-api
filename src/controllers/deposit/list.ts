@@ -1,4 +1,5 @@
-import { ethers } from 'ethers';
+/* eslint-disable indent */
+import { BigNumber, ethers } from 'ethers';
 import { RequestHandler } from 'express';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import faker from 'faker';
@@ -9,7 +10,7 @@ interface IDepositResponse {
   id: number;
   depositAddress: string;
   status: string;
-  redemptionCost: number;
+  redemptionCost: string;
   createdAt: string;
 }
 
@@ -20,7 +21,11 @@ function makeFakeDeposits() {
   for (let i = 1; i <= 47; i++) {
     const status = faker.random.arrayElement(depositStatuses);
     const redemptionCost =
-      status === depositStatuses[2] ? faker.random.number({ min: 0.5, max: 2, precision: 2 }) : null;
+      status === depositStatuses[2]
+        ? BigNumber.from(faker.random.number({ min: 100000, max: 10000000 }))
+            .mul(BigNumber.from(10).pow(11))
+            .toString()
+        : null;
     const depositAddress = ethers.Wallet.createRandom().address;
 
     deposits.push({
