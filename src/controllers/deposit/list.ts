@@ -44,9 +44,13 @@ const list: RequestHandler = async (req, res) => {
   const { page = 1, limit = 20 } = req.query;
   const start = (limit as number) * ((page as number) - 1);
   const end = (limit as number) * (page as number);
-  const result = deposits.slice(start, end);
+  const items = deposits.slice(start, end);
+  const total = deposits.length;
 
-  res.send(result);
+  res.send({
+    items,
+    total,
+  });
 };
 
 export default requestMiddleware(list);
