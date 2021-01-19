@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import Joi from '@hapi/joi';
 import { getConnection } from 'typeorm';
+import { BigNumber } from 'ethers';
 
 import requestMiddleware from '../../middleware/request-middleware';
 import { User } from '../../entities/User';
@@ -35,7 +36,7 @@ const getOrCreate: RequestHandler = async (req, res) => {
     id: user.id,
     address: user.address,
     email: user.email,
-    balanceEth: user.balanceEth,
+    balanceEth: BigNumber.from(user.balanceEth).toString(),
     operatorAddress: operatorAddress || user.operators[0]?.address,
   });
 };

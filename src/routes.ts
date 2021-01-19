@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { userController } from './controllers';
+import { depositController, userController } from './controllers';
 
 const router = Router();
 
 router.post('/user', userController.getOrCreate);
-router.put('/user/:id', userController.edit);
+router.patch('/user/:id', userController.edit);
 
-// router.put('/deposits', BookController.search);
+router.get('/deposits', depositController.list);
 
 export default router;
