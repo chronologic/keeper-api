@@ -48,7 +48,7 @@ const edit: RequestHandler = async (req, res) => {
     address: user.address,
     email: user.email,
     balanceEth: BigNumber.from(user.balanceEth || 0).toString(),
-    operatorAddress: user.operators[0]?.address,
+    operatorAddress: user.operators[0]?.address || null,
   });
 };
 
