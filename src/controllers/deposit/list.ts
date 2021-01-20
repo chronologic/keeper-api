@@ -15,7 +15,7 @@ interface IDepositResponse {
 }
 
 const deposits: IDepositResponse[] = [];
-const depositStatuses = ['ACTIVE', 'REDEEMED', 'KEEPER_REDEEMED'];
+const depositStatuses = ['ACTIVE', 'REDEEMED', 'KEEPER_REDEEMED', 'KEEPER_REDEEMING', 'KEEPER_QUEUED_FOR_REDEMPTION'];
 
 function makeFakeDeposits() {
   for (let i = 1; i <= 47; i++) {
