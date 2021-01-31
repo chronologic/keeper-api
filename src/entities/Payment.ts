@@ -4,8 +4,20 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { bigNumberColumnOptions, lowercaseTransformer } from './shared';
 import { User } from './User';
 
+enum Status {
+  CONFIRMED = 'CONFIRMED',
+  ERROR = 'ERROR',
+}
+
 @Entity()
 export class Payment {
+  // TODO: improve this
+  // lame definitions to achieve property access via Payment.Status.CONFIRMED
+  // and type annotations via status: Payment['Status'] (Payment.Status would be better though)
+  Status: Status;
+
+  static Status = Status;
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -22,8 +34,12 @@ export class Payment {
   @Column(bigNumberColumnOptions)
   amount: BigNumber;
 
-  @Column()
+  @Column({ length: 10 })
   status: string;
+
+  @Index()
+  @Column({ type: 'int' })
+  blockNumber: number;
 
   @CreateDateColumn()
   createDate: Date;

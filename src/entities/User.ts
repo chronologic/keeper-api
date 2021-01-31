@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
 import { BigNumber } from 'ethers';
 
 import { Payment } from './Payment';
@@ -13,16 +22,12 @@ export class User {
   @OneToMany((_type) => Payment, (payment) => payment.user, { nullable: true })
   payments: Payment[];
 
-  @OneToMany((_type) => Operator, (operator) => operator.user, { nullable: true })
+  @ManyToMany((_type) => Operator, (operator) => operator.users)
   operators: Operator[];
 
   @Index({ unique: true })
   @Column({ transformer: lowercaseTransformer })
   address: string;
-
-  @Index({ unique: true })
-  @Column({ transformer: lowercaseTransformer, nullable: true })
-  paymentAddressEth: string;
 
   @Column({ ...bigNumberColumnOptions, nullable: true })
   balanceEth: BigNumber;
