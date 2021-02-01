@@ -11,12 +11,12 @@ export const routeAuthMiddleware = (getter: AddrGetter): RequestHandler => (
   res: Response,
   next: NextFunction
 ) => {
-  const address = getter(req) || '';
-
-  logger.debug({ address, authAddress: req.authenticatedAddress });
+  const address = (getter(req) || '').toLowerCase();
+  const authAddress = req?.authenticatedAddress.toLowerCase();
 
   if (address !== req.authenticatedAddress) {
-    return res.end(new Unauthorized());
+    logger.debug('Route auth invalid:', { address, authAddress });
+    return next(new Unauthorized());
   }
 
   return next();

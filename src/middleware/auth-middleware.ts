@@ -1,6 +1,6 @@
 import { RequestHandler, Response, NextFunction } from 'express';
-import auth from 'basic-auth';
-import ethers from 'ethers';
+import * as ethers from 'ethers';
+import atob from 'atob';
 
 import Unauthorized from '../errors/unauthorized';
 import { RequestWithAuth } from '../types';
@@ -8,24 +8,40 @@ import { MESSAGE_TO_SIGN } from '../constants';
 import logger from '../logger';
 
 export const authMiddleware = (): RequestHandler => (req: RequestWithAuth, res: Response, next: NextFunction) => {
-  const { name, pass } = auth(req) || {};
+  const { user, pass } = decodeAuthHeader(req.headers.authorization);
 
-  logger.debug({ name, pass });
+  logger.debug({ user, pass });
 
-  if (!name || !pass) {
-    return res.end(new Unauthorized());
+  if (!user || !pass) {
+    logger.debug('Auth data missing:', { user, pass });
+    return next(new Unauthorized());
   }
 
-  const valid = ethers.utils.verifyMessage(MESSAGE_TO_SIGN, pass).toLowerCase() === name.toLowerCase();
+  const valid = ethers.utils.verifyMessage(MESSAGE_TO_SIGN, pass).toLowerCase() === user;
 
   logger.debug(`Auth valid: ${valid}`);
 
   if (!valid) {
-    return res.end(new Unauthorized());
+    logger.debug('Auth invalid:', { user, pass, MESSAGE_TO_SIGN });
+    return next(new Unauthorized());
   }
 
-  req.authenticatedAddress = name.toLowerCase();
+  req.authenticatedAddress = user;
   return next();
 };
+
+function decodeAuthHeader(header: string): { user: string; pass: string } {
+  try {
+    const authToken = header.split(' ')[1];
+    const [user, pass] = atob(authToken)
+      .split(':')
+      .map((s) => s.toLowerCase());
+
+    return { user, pass };
+  } catch (e) {
+    logger.error(e);
+    return { user: undefined, pass: undefined };
+  }
+}
 
 export default authMiddleware;
