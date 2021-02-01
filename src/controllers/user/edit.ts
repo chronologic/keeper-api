@@ -7,6 +7,7 @@ import { User } from '../../entities/User';
 import BadRequest from '../../errors/bad-request';
 import { Operator } from '../../entities/Operator';
 import { BigNumber } from 'ethers';
+import { Deposit } from '../../entities';
 
 export const editSchema = Joi.object().keys({
   email: Joi.string().optional(),
@@ -31,6 +32,10 @@ const edit: RequestHandler = async (req, res) => {
   if (operatorAddress === null || operatorAddress === '') {
     user.operators = [];
   } else if (typeof operatorAddress !== 'undefined') {
+    if (await hasDepositsBeingProcessed(user.id)) {
+      throw new BadRequest('Cannot update operator address while its deposits are being processed');
+    }
+
     let operator = await manager.findOne(Operator, {
       where: { address: operatorAddress },
     });
@@ -51,5 +56,21 @@ const edit: RequestHandler = async (req, res) => {
     operatorAddress: user.operators[0]?.address || null,
   });
 };
+
+async function hasDepositsBeingProcessed(userId: number): Promise<boolean> {
+  const count = await getConnection()
+    .createQueryBuilder()
+    .select('1')
+    .from(User, 'u')
+    .innerJoin('u.operators', 'o')
+    .innerJoin('o.deposits', 'd')
+    .where('u.id = :userId', { userId })
+    .andWhere('d."systemStatus" in (:...statuses)', {
+      statuses: [Deposit.SystemStatus.QUEUED_FOR_REDEMPTION, Deposit.SystemStatus.REDEEMING],
+    })
+    .getCount();
+
+  return count > 0;
+}
 
 export default requestMiddleware(edit, { validation: { body: editSchema } });
