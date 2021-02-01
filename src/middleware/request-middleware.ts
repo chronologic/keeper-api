@@ -39,11 +39,7 @@ export const requestMiddleware = (handler: RequestHandler, options?: HandlerOpti
     return handler(req, res, next);
   } catch (err) {
     if (process.env.NODE_ENV === 'development') {
-      logger.log({
-        level: 'error',
-        message: 'Error in request handler',
-        error: err,
-      });
+      logger.error(err);
     }
     return next(err);
   }
