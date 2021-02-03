@@ -80,7 +80,7 @@ async function getDepositsForAddress(
     .innerJoin('o.deposits', 'd2')
     .where('d.id = d2.id')
     .andWhere('(d.status in (:...statuses) OR d."systemStatus" is not null)', {
-      statuses: [Deposit.Status.ACTIVE],
+      statuses: [Deposit.Status[Deposit.Status.ACTIVE]],
     })
     .andWhere('u.address = :address', { address });
 
@@ -91,7 +91,6 @@ async function getDepositsForAddress(
     .addOrderBy('d."systemStatus"', 'DESC', 'NULLS LAST')
     .addOrderBy('d.status', 'DESC')
     .addOrderBy('d."createdAt"', 'DESC')
-    // .orderBy({ 'd."systemStatus"': ['DESC', 'NULLS LAST'], 'd.status': 'ASC', 'd."createdAt"': 'DESC' })
     .limit(limit)
     .offset(offset)
     .execute();
