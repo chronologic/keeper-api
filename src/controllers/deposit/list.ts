@@ -71,7 +71,13 @@ async function getDepositsForAddress(
   limit = 20
 ): Promise<{ items: Deposit[]; total: number }> {
   const connection = getConnection();
-  const q = connection.createQueryBuilder().select('*').from(Deposit, 'd');
+  const q = connection
+    .createQueryBuilder()
+    .select(
+      // eslint-disable-next-line max-len
+      '"createdAt", "depositAddress", "lotSizeSatoshis", "status", "systemStatus", "redemptionCostEthEquivalentWithFee" as "redemptionCost"'
+    )
+    .from(Deposit, 'd');
   const subq = q
     .subQuery()
     .select('1')
@@ -86,7 +92,7 @@ async function getDepositsForAddress(
 
   const offset = limit * (page - 1);
 
-  const items = await q
+  const rawItems = await q
     .andWhere(`exists ${subq.getQuery()}`)
     .addOrderBy('d."systemStatus"', 'DESC', 'NULLS LAST')
     .addOrderBy('d.status', 'DESC')
@@ -95,6 +101,13 @@ async function getDepositsForAddress(
     .offset(offset)
     .execute();
   const total = await q.andWhere(`exists ${subq.getQuery()}`).getCount();
+
+  // merge deposit status with system status for the UI
+  const items = rawItems.map((item: any) => {
+    // eslint-disable-next-line no-param-reassign
+    item.status = item.systemStatus ? `KEEPER_${item.systemStatus}` : item.status;
+    return item;
+  });
 
   return { items, total };
 }
