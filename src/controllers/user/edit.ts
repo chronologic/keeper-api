@@ -1,13 +1,10 @@
 import { RequestHandler } from 'express';
 import Joi from '@hapi/joi';
-import { getConnection } from 'typeorm';
+import { Deposit, getConnection, Operator, User } from 'keeper-db';
 
 import requestMiddleware from '../../middleware/request-middleware';
-import { User } from '../../entities/User';
 import BadRequest from '../../errors/bad-request';
-import { Operator } from '../../entities/Operator';
 import { BigNumber } from 'ethers';
-import { Deposit } from '../../entities';
 
 export const editSchema = Joi.object().keys({
   email: Joi.string().optional(),

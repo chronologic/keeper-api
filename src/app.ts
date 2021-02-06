@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 
+import { NODE_ENV, PORT } from './env';
 import authMiddleware from './middleware/auth-middleware';
 import ApplicationError from './errors/application-error';
 import routes from './routes';
@@ -17,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('tiny'));
 app.use(authMiddleware());
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', PORT);
 
 app.use(routes);
 
@@ -27,7 +28,7 @@ app.use((err: ApplicationError, req: Request, res: Response, next: NextFunction)
   }
 
   return res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'development' ? err : undefined,
+    error: NODE_ENV === 'development' ? err : undefined,
     message: err.message,
   });
 });

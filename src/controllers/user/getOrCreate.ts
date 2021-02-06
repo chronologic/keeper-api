@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express';
 import Joi from '@hapi/joi';
-import { getConnection } from 'typeorm';
 import { BigNumber } from 'ethers';
+import { getConnection, User } from 'keeper-db';
 
 import requestMiddleware from '../../middleware/request-middleware';
-import { User } from '../../entities/User';
 
 export const addUserSchema = Joi.object().keys({
   address: Joi.string().required(),
