@@ -19,7 +19,7 @@ Below is a list of possible environment variables.
 | Name        | Type     | Default | Description                                                                     |
 | ----------- | -------- | ------- | ------------------------------------------------------------------------------- |
 | `LOG_LEVEL` | `string` | `info`  | Standard [`npm`](https://github.com/winstonjs/winston#logging-levels) log level |
-| `PORT`      | `number` | `3000`  | Port number that the API will listen on                                         |
+| `PORT`      | `number` | `3001`  | Port number that the API will listen on                                         |
 | `DB_URL`    | `string` |         | PostgreSQL connection string                                                    |
 
 ## Deployment
