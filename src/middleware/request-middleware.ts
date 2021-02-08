@@ -1,7 +1,7 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import Joi from '@hapi/joi';
 
-import { NODE_ENV } from '../env';
+import { LOG_LEVEL } from '../env';
 import BadRequest from '../errors/bad-request';
 import logger from '../logger';
 
@@ -40,7 +40,7 @@ export const requestMiddleware = (handler: RequestHandler, options?: HandlerOpti
   try {
     return handler(req, res, next);
   } catch (err) {
-    if (NODE_ENV === 'development') {
+    if (LOG_LEVEL === 'debug') {
       logger.error(err);
     }
     return next(err);

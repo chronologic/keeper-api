@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import express, { Request, Response, NextFunction } from 'express';
 
-import { NODE_ENV, PORT } from './env';
+import { LOG_LEVEL, PORT } from './env';
 import authMiddleware from './middleware/auth-middleware';
 import ApplicationError from './errors/application-error';
 import routes from './routes';
@@ -28,7 +28,7 @@ app.use((err: ApplicationError, req: Request, res: Response, next: NextFunction)
   }
 
   return res.status(err.status || 500).json({
-    error: NODE_ENV === 'development' ? err : undefined,
+    error: LOG_LEVEL === 'debug' ? err : undefined,
     message: err.message,
   });
 });
