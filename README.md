@@ -26,7 +26,9 @@ Below is a list of possible environment variables.
 
 ## Deployment
 
-You may deploy this service to e.g. https://www.heroku.com/
+This project is configured to be deployed on https://heroku.com. The deployment config can be found in `Procfile`.
+
+Detailed deployment instructions can be found [here](https://devcenter.heroku.com/articles/deploying-nodejs).
 
 ## Building
 
