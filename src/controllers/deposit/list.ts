@@ -50,7 +50,7 @@ async function getDepositsForAddress(
 
   const rawItems = await q
     .andWhere(`exists ${subq.getQuery()}`)
-    .addOrderBy('d."systemStatus"', 'DESC', 'NULLS LAST')
+    .addOrderBy('d."systemStatus"', 'ASC', 'NULLS LAST')
     .addOrderBy('d.status', 'DESC')
     .addOrderBy('d."createdAt"', 'DESC')
     .limit(limit)
