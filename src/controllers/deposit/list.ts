@@ -1,8 +1,13 @@
 import { RequestHandler } from 'express';
 import { Deposit, getConnection, User } from 'keeper-db';
 
+import { MAX_LOT_SIZE_BTC, MIN_LOT_SIZE_BTC } from '../../env';
 import requestMiddleware from '../../middleware/request-middleware';
 import { RequestWithAuth } from '../../types';
+import { numberToBnBtc } from '../../utils';
+
+const minLotSize = numberToBnBtc(MIN_LOT_SIZE_BTC).toString();
+const maxLotSize = numberToBnBtc(MAX_LOT_SIZE_BTC).toString();
 
 const list: RequestHandler = async (req: RequestWithAuth, res) => {
   const { page = 1, limit = 20 } = req.query;
@@ -37,7 +42,9 @@ async function getDepositsForAddress(
     .andWhere('(d.status in (:...statuses) OR d."systemStatus" is not null)', {
       statuses: [Deposit.Status[Deposit.Status.ACTIVE]],
     })
-    .andWhere('u.address = :address', { address });
+    .andWhere('u.address = :address', { address })
+    .andWhere('d."lotSizeSatoshis" >= :minLotSize', { minLotSize })
+    .andWhere('d."lotSizeSatoshis" <= :maxLotSize', { maxLotSize });
 
   const offset = limit * (page - 1);
 
