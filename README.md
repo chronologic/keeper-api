@@ -10,7 +10,7 @@ This repository holds the REST API service for the Keeper UI.
 
 This repo uses [`dotenv`](https://www.npmjs.com/package/dotenv) to load environment variables.
 
-For development, and `.env` file should be created based on the `.env.example` template file. The `.env` file should never be commited.
+For development, a `.env` file should be created based on the `.env.example` template file. The `.env` file should never be commited.
 
 In production, environment variables can be injected directly.
 
