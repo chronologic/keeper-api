@@ -20,7 +20,7 @@ Below is a list of possible environment variables.
 | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `LOG_LEVEL`        | `string` | `info`  | Standard [`npm`](https://github.com/winstonjs/winston#logging-levels) log level                                                                               |
 | `PORT`             | `number` | `3001`  | Port number that the API will listen on                                                                                                                       |
-| `DB_URL`           | `string` |         | PostgreSQL connection string                                                                                                                                  |
+| `DATABASE_URL`     | `string` |         | PostgreSQL connection string                                                                                                                                  |
 | `MIN_LOT_SIZE_BTC` | `number` | `1`     | For smaller lot sizes it may be cheaper to get liquidated than to redeem. This should be set to match the value in `keeper-service`                           |
 | `MAX_LOT_SIZE_BTC` | `number` | `1000`  | This is used mainly for testing/dev purposes to force the system to only redeem specific lot sizes. This should be set to match the value in `keeper-service` |
 
